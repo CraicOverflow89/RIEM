@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from graphics.alignment import Align
-from library.list import ArrayList
-from library.point import Point
+from riem.graphics.alignment import Align
+from riem.library.list import ArrayList
+from riem.library.point import Point
 import time
 
 class State(ABC):

@@ -1,5 +1,5 @@
-from graphics.alignment import Align
-from library.point import Point
+from riem.graphics.alignment import Align
+from riem.library.point import Point
 import tkinter as tk
 
 class Graphics:

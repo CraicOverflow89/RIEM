@@ -1,4 +1,4 @@
-from input.action import Action
+from riem.input.action import Action
 
 class Keyboard:
 
