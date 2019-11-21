@@ -17,6 +17,9 @@ class State(ABC):
 			"timer": (time.time() * 1000) + time_ms
 		})
 
+	def get_name(self):
+		return self.name
+
 	def on_action(self, action):
 		pass
 
