@@ -43,14 +43,22 @@ class ArrayList():
 
 	def all(self, logic):
 		for element in self.value:
-			if not logic(*element):
-				return False
+			if isinstance(element, tuple):
+				if not logic(*element):
+					return False
+			else:
+				if not logic(element):
+					return False
 		return True
 
 	def any(self, logic):
 		for element in self.value:
-			if logic(*element):
-				return True
+			if isinstance(element, tuple):
+				if logic(*element):
+					return True
+			else:
+				if logic(element):
+					return True
 		return False
 
 	def contains(self, value):
@@ -67,21 +75,32 @@ class ArrayList():
 
 	def each(self, logic):
 		for element in self.value:
-			logic(*element)
+			if isinstance(element, tuple):
+				logic(*element)
+			else:
+				logic(element)
 		return self
 
 	def filter(self, logic):
 		result = []
 		for element in self.value:
-			if logic(*element):
-				result.append(element)
+			if isinstance(element, tuple):
+				if logic(*element):
+					result.append(element)
+			else:
+				if logic(element):
+					result.append(element)
 		return ArrayList(result)
 
 	def first(self, logic = None):
 		if logic is None: return self.value[0]
 		for element in self.value:
-			if logic(*element):
-				return element
+			if isinstance(element, tuple):
+				if logic(*element):
+					return element
+			else:
+				if logic(element):
+					return element
 		return None
 
 	def flatten(self):
@@ -120,20 +139,31 @@ class ArrayList():
 	def map(self, logic):
 		result = []
 		for element in self.value:
-			result.append(logic(*element))
+			if isinstance(element, tuple):
+				result.append(logic(*element))
+			else:
+				result.append(logic(element))
 		return ArrayList(result)
 
 	def none(self, logic):
 		for element in self.value:
-			if logic(*element):
-				return False
+			if isinstance(element, tuple):
+				if logic(*element):
+					return False
+			else:
+				if logic(element):
+					return False
 		return True
 
 	def reject(self, logic):
 		result = []
 		for element in self.value:
-			if not logic(*element):
-				result.append(element)
+			if isinstance(element, tuple):
+				if not logic(*element):
+					result.append(element)
+			else:
+				if not logic(element):
+					result.append(element)
 		return ArrayList(result)
 
 	def remove(self, value):
@@ -171,7 +201,10 @@ class ArrayList():
 	def to_map(self, logic):
 		result = {}
 		for element in self.value:
-			key, value = logic(*element)
+			if isinstance(element, tuple):
+				key, value = logic(*element)
+			else:
+				key, value = logic(element)
 			result[key] = value
 		return result
 
