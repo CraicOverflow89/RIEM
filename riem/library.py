@@ -165,6 +165,13 @@ class ArrayList():
 			result.append(element)
 		return result
 
+	def to_map(self, logic):
+		result = {}
+		for element in self.value:
+			key, value = logic(element)
+			result[key] = value
+		return result
+
 class Dimensions:
 
 	def __init__(self, width, height):
