@@ -15,6 +15,9 @@ class ArrayList():
 		self.iter_pos = 0
 		return self
 
+	def __len__(self):
+		return self.size()
+
 	def __next__(self):
 		if self.iter_pos == len(self.value):
 			raise StopIteration
