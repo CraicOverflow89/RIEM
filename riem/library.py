@@ -172,6 +172,9 @@ class ArrayList():
 			result[key] = value
 		return result
 
+	def to_string(self, delimiter = "", prefix = "", postfix = ""):
+		return "".join([prefix, delimiter.join(self.map(lambda it: str(it)).to_list()), postfix])
+
 class Dimensions:
 
 	def __init__(self, width, height):
