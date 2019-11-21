@@ -46,7 +46,7 @@ class Application:
 		# State Management
 		self.state_active = None
 		self.state_stored = None
-		self.state_loaded = self.state_load(state_directory)
+		self.state_loaded = state_load(state_directory)
 		self.state_bind = lambda: self.app.bind("<Key>", self.on_key_pressed)
 		# NOTE: these shouldn't be public
 
