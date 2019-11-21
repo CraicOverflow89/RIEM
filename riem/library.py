@@ -81,6 +81,33 @@ class ArrayList():
 				return element
 		return None
 
+	def flatten(self):
+
+		# Create Result
+		result = []
+
+		# Unpack Logic
+		def unpack(value):
+
+			# Unpack ArrayList
+			if isinstance(value, ArrayList):
+				for element in value.to_list():
+					unpack(element)
+
+			# Unpack List
+			elif isinstance(value, list):
+				for element in value:
+					unpack(element)
+
+			# Append Element
+			else: result.append(value)
+
+		# Append Value
+		unpack(self.value)
+
+		# Return Result
+		return ArrayList(result)
+
 	def get(self, position):
 		return self.value[position]
 
