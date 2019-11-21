@@ -40,13 +40,13 @@ class ArrayList():
 
 	def all(self, logic):
 		for element in self.value:
-			if not logic(element):
+			if not logic(*element):
 				return False
 		return True
 
 	def any(self, logic):
 		for element in self.value:
-			if logic(element):
+			if logic(*element):
 				return True
 		return False
 
@@ -64,20 +64,20 @@ class ArrayList():
 
 	def each(self, logic):
 		for element in self.value:
-			logic(element)
+			logic(*element)
 		return self
 
 	def filter(self, logic):
 		result = []
 		for element in self.value:
-			if logic(element):
+			if logic(*element):
 				result.append(element)
 		return ArrayList(result)
 
 	def first(self, logic = None):
 		if logic is None: return self.value[0]
 		for element in self.value:
-			if logic(element):
+			if logic(*element):
 				return element
 		return None
 
@@ -117,19 +117,19 @@ class ArrayList():
 	def map(self, logic):
 		result = []
 		for element in self.value:
-			result.append(logic(element))
+			result.append(logic(*element))
 		return ArrayList(result)
 
 	def none(self, logic):
 		for element in self.value:
-			if logic(element):
+			if logic(*element):
 				return False
 		return True
 
 	def reject(self, logic):
 		result = []
 		for element in self.value:
-			if not logic(element):
+			if not logic(*element):
 				result.append(element)
 		return ArrayList(result)
 
@@ -168,7 +168,7 @@ class ArrayList():
 	def to_map(self, logic):
 		result = {}
 		for element in self.value:
-			key, value = logic(element)
+			key, value = logic(*element)
 			result[key] = value
 		return result
 
