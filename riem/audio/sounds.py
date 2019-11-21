@@ -1,4 +1,4 @@
-from riem.library.list import ArrayList
+from library.list import ArrayList
 from threading import Thread
 from playsound import playsound
 

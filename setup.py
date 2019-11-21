@@ -6,8 +6,8 @@ setup(
     description = 'Python framework for application development on Raspberry Pi.',
     keywords = ['RaspberryPi', 'framework', 'tkinter'],
     license = 'MIT',
-    packages = ['RIEM'],
-    name = 'RIEM',
+    packages = ['riem'],
+    name = 'riem',
     url = 'https://github.com/CraicOverflow89/RIEM',
     version = '0.0.1'
 )

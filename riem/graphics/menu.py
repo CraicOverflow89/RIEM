@@ -1,6 +1,6 @@
-from riem.input.action import Action
-from riem.library.list import ArrayList
-from riem.library.point import Point
+from input.action import Action
+from library.list import ArrayList
+from library.point import Point
 
 class Menu:
 
