@@ -1,4 +1,4 @@
-from riem.setuptools import setup
+from setuptools import setup
 
 setup(
     author = 'James Storer',
