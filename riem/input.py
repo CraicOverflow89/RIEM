@@ -1,7 +1,14 @@
-from input.action import Action
-from library.list import ArrayList
+import enum
+from riem.library import ArrayList
 from threading import Event, Thread
 import pygame
+
+class Action(enum.Enum):
+	ACTION = 0
+	UP = 1
+	DOWN = 2
+	LEFT = 3
+	RIGHT = 4
 
 class Controller:
 
@@ -62,3 +69,18 @@ class Controller:
 			self.listener_halt.set()
 			self.listener_thread.join()
 		pygame.quit()
+
+class Keyboard:
+
+	action = {
+		13: Action.ACTION,
+		36: Action.ACTION,
+		37: Action.LEFT,
+		38: Action.UP,
+		39: Action.RIGHT,
+		40: Action.DOWN,
+		111: Action.UP,
+		113: Action.LEFT,
+		114: Action.RIGHT,
+		116: Action.DOWN
+	}

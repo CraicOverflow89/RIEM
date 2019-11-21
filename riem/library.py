@@ -1,3 +1,5 @@
+import enum
+
 class ArrayList():
 
 	def __init__(self, *value):
@@ -135,3 +137,60 @@ class ArrayList():
 		for element in self.value:
 			result.append(element)
 		return result
+
+class Dimensions:
+
+	def __init__(self, width, height):
+		self.width = width
+		self.height = height
+
+	def __add__(self, value):
+		return Dimensions(self.width + value, self.height + value)
+
+	def __mul__(self, value):
+		return Dimensions(self.width * value, self.height * value)
+
+	def __str__(self):
+		return "{width: %d, height: %d}" % (self.width, self.height)
+
+	def __sub__(self, value):
+		return Dimensions(self.width - value, self.height - value)
+
+	def __truediv__(self, value):
+		return Dimensions(self.width / value, self.height / value)
+
+	def contains(self, point):
+		return point.x >= 0 and point.x <= self.width and point.y >= 0 and point.y <= self.height
+
+class Direction(enum.Enum):
+	EAST = 0
+	NORTH = 1
+	SOUTH = 2
+	WEST = 3
+
+class Point:
+
+	def __init__(self, x, y):
+		self.x = x
+		self.y = y
+
+	def __add__(self, other):
+		return Point(self.x + other.x, self.y + other.y)
+
+	def __eq__(self, other):
+		return self.x == other.x and self.y == other.y
+
+	def __mul__(self, other):
+		return Point(self.x * other.x, self.y * other.y)
+
+	def __neq__(self, other):
+		return self.x != other.x or self.y != other.y
+
+	def __str__(self):
+		return "{x: %d, y: %d}" % (self.x, self.y)
+
+	def __sub__(self, other):
+		return Point(self.x - other.x, self.y - other.y)
+
+	def __truediv__(self, other):
+		return Point(self.x / other.x, self.y / other.y)
