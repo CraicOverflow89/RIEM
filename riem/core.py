@@ -175,9 +175,8 @@ class Application:
 
 class State(ABC):
 
-	def __init__(self, app, name):
+	def __init__(self, app):
 		self.app = app
-		self.name = name
 		self.event = ArrayList()
 
 	def add_event(self, time_ms, logic):
@@ -185,9 +184,6 @@ class State(ABC):
 			"logic": logic,
 			"timer": (time.time() * 1000) + time_ms
 		})
-
-	def get_name(self):
-		return self.name
 
 	def on_action(self, action):
 		pass
@@ -210,9 +206,11 @@ class State(ABC):
 
 	def render_hint(self, gfx, value):
 		gfx.draw_text(value, Point(10, self.app.get_dimensions().height - 25), Align.LEFT, "Inconsolata 12")
+		# NOTE: maybe make this game specific (move to a helper class or graphics library of styles?)
 
 	def render_title(self, gfx, value):
 		gfx.draw_text(value, Point(25, 25), Align.LEFT, "Inconsolata 22", "#E62959", "#801731")
+		# NOTE: maybe make this game specific (move to a helper class or graphics library of styles?)
 
 	@abstractmethod
 	def tick(self):
