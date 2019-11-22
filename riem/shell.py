@@ -1,3 +1,4 @@
+from riem.library import FileSystem
 import os, sys
 
 # Script Logic
@@ -20,18 +21,16 @@ def invoke(args):
 			project_name = args[0]
 
 		# Create Directories
+		project_name_lowercase = project_name.lower()
 		os.mkdir(os.path.join(os.getcwd(), project_name))
-		os.mkdir(os.path.join(os.getcwd(), project_name, "resources"))
-		os.mkdir(os.path.join(os.getcwd(), project_name, "resources", "images"))
-		os.mkdir(os.path.join(os.getcwd(), project_name, "resources", "sounds"))
-		os.mkdir(os.path.join(os.getcwd(), project_name, "states"))
+		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase))
+		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase, "resources"))
+		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase, "resources", "images"))
+		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase, "resources", "sounds"))
+		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase, "states"))
 
 		# Create Files
-		fs = open(os.path.join(os.getcwd(), project_name, "app.py"), "x")
-		fs.write("from riem.core import Application 1")
-		fs.write("")
-		fs.write("from riem.core import Application 2")
-		fs.close()
+		FileSystem.write_file(os.path.join(os.getcwd(), project_name, "app.py"), "from riem.core import Application")
 
 	# Command Map
 	commands = {
