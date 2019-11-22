@@ -1,0 +1,1 @@
+python -m riem.shell "$@" > /dev/null
