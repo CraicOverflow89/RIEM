@@ -9,5 +9,5 @@ setup(
     packages = ['riem'],
     name = 'riem',
     url = 'https://github.com/CraicOverflow89/RIEM',
-    version = '0.0.2'
+    version = '0.0.3'
 )
