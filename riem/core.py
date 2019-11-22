@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from riem.graphics import Align, Graphics
+from PIL import Image, ImageTk
+from riem.graphics import Align, Graphics, Menu
 from riem.input import Controller, Keyboard
 from riem.library import ArrayList, Dimensions, Point
 from riem.library import Point
@@ -13,6 +14,9 @@ class Application:
 	tick_ms = 250
 
 	def __init__(self, title, state_initial, state_directory, size = Dimensions(960, 720)):
+
+		# Public Properties
+		self.size = size
 
 		# State Logic
 		def state_load(directory):
@@ -31,7 +35,7 @@ class Application:
 				result = ArrayList(list(module.__dict__.keys())).reject(lambda it: it == "State")
 
 				# Map Classes
-				result = result.map(lambda it: getattr(module, it)).map(lambda it: (it.get_name(), it))
+				result = result.map(lambda it: (it, getattr(module, it)))
 
 				# Return States
 				return result.filter(lambda _, v: inspect.isclass(v) and issubclass(v, State))
@@ -63,8 +67,8 @@ class Application:
 		# Create Graphics
 		gfx = Graphics(canvas)
 
-		# Initial State
-		self.state_update(state_initial)
+		# Intro State
+		self.state_active = StateIntro(self, state_initial)
 
 		# Initialise Controller
 		self.controller = Controller(self)
@@ -227,3 +231,28 @@ class State(ABC):
 
 			# Remove Event
 			self.event = self.event.remove(event)
+
+class StateIntro(State):
+
+	def __init__(self, app, state_initial):
+		super().__init__(app)
+
+		# Create Event
+		self.add_event(2000, lambda: self.app.state_update(state_initial))
+
+	def render(self, gfx):
+
+		# Load Logo
+		self.logo = ImageTk.PhotoImage(Image.open("resources/images/brand/riem_logo.png"))
+		# NOTE: this is currently assuming the file exists in project
+		#       change this later to use a predefined byte array
+
+		# Render Logo
+		gfx.draw_image(self.logo, Point(self.app.get_dimensions().width / 2, self.app.get_dimensions().height / 2), Align.CENTER)
+
+		# Render Loading
+		# NOTE: when resources are preloaded, there should be an object that fires off these tasks
+		#       and provides a completion percentage to the a progress bar object that renders
+
+	def tick(self):
+		pass
