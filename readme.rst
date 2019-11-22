@@ -20,4 +20,4 @@ This will create a local package to install with PIP.
 Graphics
 --------
 
-- the RIEM logo is comprised of free graphics from [cleanpng](https://www.cleanpng.com) and [cooltext](https://cooltext.com)
+- the RIEM logo is comprised of free graphics from `cleanpng <https://www.cleanpng.com>`_ and `cooltext <https://cooltext.com>`_
