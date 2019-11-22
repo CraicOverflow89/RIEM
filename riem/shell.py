@@ -7,6 +7,7 @@ def invoke(args):
 	def help():
 		print("Help")
 		# NOTE: list commands and args
+		#       commands.each {get metadata/annotations of it}
 
 	# Command: Create
 	def create(args):
@@ -32,7 +33,7 @@ def invoke(args):
 
 		# Invalid Command
 		else:
-			print("Command %s not recognised" % args[0])
+			print("Command %s not recognised!" % args[0])
 			help()
 
 # Invoke Script
