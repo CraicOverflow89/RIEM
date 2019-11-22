@@ -241,6 +241,23 @@ class Direction(enum.Enum):
 	SOUTH = 2
 	WEST = 3
 
+class FileSystem():
+
+	def write_file(location, content):
+
+		# Convert ArrayList
+		if isinstance(content, ArrayList):
+			content = content.to_list()
+
+		# Unpack List
+		if isinstance(content, list):
+			content = "\n".join(content)
+
+		# Write File
+		fs = open(location, "x")
+		fs.write(content)
+		fs.close()
+
 class Point:
 
 	def __init__(self, x, y):
