@@ -1,4 +1,4 @@
-import sys
+import os, sys
 
 # Script Logic
 def invoke(args):
@@ -11,8 +11,27 @@ def invoke(args):
 
 	# Command: Create
 	def create(args):
-		print("App Skeleton")
-		# NOTE: create dirs and files at cwd
+
+		# Project Name
+		if len(args) == 0:
+			print("Please specify a project name!")
+			sys.exit(-1)
+		else:
+			project_name = args[0]
+
+		# Create Directories
+		os.mkdir(os.path.join(os.getcwd(), project_name))
+		os.mkdir(os.path.join(os.getcwd(), project_name, "resources"))
+		os.mkdir(os.path.join(os.getcwd(), project_name, "resources", "images"))
+		os.mkdir(os.path.join(os.getcwd(), project_name, "resources", "sounds"))
+		os.mkdir(os.path.join(os.getcwd(), project_name, "states"))
+
+		# Create Files
+		fs = open(os.path.join(os.getcwd(), project_name, "app.py"), "x")
+		fs.write("from riem.core import Application 1")
+		fs.write("")
+		fs.write("from riem.core import Application 2")
+		fs.close()
 
 	# Command Map
 	commands = {
