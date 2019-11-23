@@ -21,16 +21,23 @@ def invoke(args):
 			project_name = args[0]
 
 		# Create Directories
+		cwd = os.getcwd()
 		project_name_lowercase = project_name.lower()
-		os.mkdir(os.path.join(os.getcwd(), project_name))
-		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase))
-		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase, "resources"))
-		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase, "resources", "images"))
-		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase, "resources", "sounds"))
-		os.mkdir(os.path.join(os.getcwd(), project_name, project_name_lowercase, "states"))
+		os.mkdir(os.path.join(cwd, project_name))
+		os.mkdir(os.path.join(cwd, project_name, project_name_lowercase))
+		os.mkdir(os.path.join(cwd, project_name, project_name_lowercase, "resources"))
+		os.mkdir(os.path.join(cwd, project_name, project_name_lowercase, "resources", "images"))
+		os.mkdir(os.path.join(cwd, project_name, project_name_lowercase, "resources", "sounds"))
+		os.mkdir(os.path.join(cwd, project_name, project_name_lowercase, "states"))
 
-		# Create Files
-		FileSystem.write_file(os.path.join(os.getcwd(), project_name, "app.py"), "from riem.core import Application")
+		# App File
+		content_app = "".join(FileSystem.read_file("%s/resources/skeleton/app" % "/".join(__file__.split("/")[:-2])))
+		content_app = content_app.replace("[project_name]", project_name)
+		content_app = content_app.replace("[project_name_lower]", project_name_lowercase)
+		FileSystem.write_file(os.path.join(cwd, project_name, project_name_lowercase, "app.py"), content_app)
+
+		# Done
+		print("Created the % project!" % project_name)
 
 	# Command Map
 	commands = {

@@ -1,0 +1,10 @@
+from riem.core import Application
+
+# Game Class
+class [project_name](Application):
+
+	def __init__(self):
+		super().__init__("[project_name]", "initial_state_goes_here", "[project_name_lower]/states")
+
+# Launch Application
+[project_name]()
