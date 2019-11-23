@@ -243,6 +243,16 @@ class Direction(enum.Enum):
 
 class FileSystem():
 
+	def read_file(location):
+
+		# Read File
+		fs = open(location, "r")
+		result = ArrayList(fs.readlines())
+		fs.close()
+
+		# Return Contents
+		return result
+
 	def write_file(location, content):
 
 		# Convert ArrayList
@@ -251,7 +261,7 @@ class FileSystem():
 
 		# Unpack List
 		if isinstance(content, list):
-			content = "\n".join(content)
+			content = "".join(content)
 
 		# Write File
 		fs = open(location, "x")
