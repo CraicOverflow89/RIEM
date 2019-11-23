@@ -1,6 +1,6 @@
 from riem.library import FileSystem
 from riem.version import __version__
-import os, sys
+import os, requests, sys
 
 # Script Logic
 def invoke(args):
@@ -45,8 +45,16 @@ def invoke(args):
 	# Command: Version
 	def version(args):
 
+		# Print Logo
+		FileSystem.read_file("%s/resources/shell/logo.txt" % "/".join(__file__.split("/")[:-2])).each(lambda it: print(it))
+		print("")
+
 		# Current Version
-		print("RIEM Version %s " % __version__)
+		print("Current Version      %s " % __version__)
+
+		# Latest Version
+		response = requests.get(url = "https://raw.githubusercontent.com/CraicOverflow89/RIEM/master/riem/version.py")
+		print("Latest Version       %s " % response.text.split("\"")[1])
 
 	# Command Map
 	commands = {

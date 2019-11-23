@@ -15,7 +15,7 @@ This will create a local package to install with PIP.
 	$ python setup.py sdist
 
 	# Install Module (as admin on Windows)
-	$ python -m pip install ./dist/riem-0.0.1.tar.gz
+	$ python -m pip install ./dist/riem-x.y.z.tar.gz
 
 Graphics
 --------

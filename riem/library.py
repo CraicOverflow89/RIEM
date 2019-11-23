@@ -245,10 +245,13 @@ class FileSystem():
 
 	def read_file(location):
 
+		# Create Result
+		result = ArrayList()
+
 		# Read File
-		fs = open(location, "r")
-		result = ArrayList(fs.readlines())
-		fs.close()
+		with open(location, "r") as fs:
+			for line in fs:
+				result = result.add(line.replace("\n", ""))
 
 		# Return Contents
 		return result
@@ -264,9 +267,8 @@ class FileSystem():
 			content = "".join(content)
 
 		# Write File
-		fs = open(location, "x")
-		fs.write(content)
-		fs.close()
+		with open(location, "x") as fs:
+			fs.write(content)
 
 class Point:
 
