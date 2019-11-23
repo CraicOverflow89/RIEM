@@ -9,11 +9,7 @@ import importlib, inspect, os, re, sys, time
 
 class Application:
 
-	# Constants
-	version = "0.0.1"
-	tick_ms = 250
-
-	def __init__(self, title, state_initial, state_directory, size = Dimensions(960, 720)):
+	def __init__(self, title, state_initial, state_directory, size = Dimensions(960, 720), tick_ms = 250):
 
 		# Public Properties
 		self.size = size
@@ -59,6 +55,7 @@ class Application:
 		self.app.title(title)
 		self.app.geometry("%dx%d" % (self.size.width, self.size.height))
 		self.app.resizable(False, False)
+		# NOTE: this shouldn't be public
 
 		# Create Canvas
 		canvas = Canvas(self.app, bg = "black", width = self.size.width, height = self.size.height, highlightthickness = 0)
@@ -100,8 +97,8 @@ class Application:
 			# Schedule Loop
 			loop_time = (time.time() * 1000) - loop_time
 			loop_wait = 0
-			if loop_time < Application.tick_ms:
-				loop_wait = Application.tick_ms - loop_time
+			if loop_time < tick_ms:
+				loop_wait = tick_ms - loop_time
 			self.app.after(int(loop_wait), loop)
 
 		# Invoke Loop
