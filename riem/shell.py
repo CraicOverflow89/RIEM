@@ -1,21 +1,16 @@
 from riem.library import FileSystem
+from riem.version import __version__
 import os, sys
 
 # Script Logic
 def invoke(args):
-
-	# Command: Help
-	def help():
-		print("Help")
-		# NOTE: list commands and args
-		#       commands.each {get metadata/annotations of it}
 
 	# Command: Create
 	def create(args):
 
 		# Project Name
 		if len(args) == 0:
-			print("Please specify a project name!")
+			print("ERROR: Must specify a project name!")
 			sys.exit(-1)
 		else:
 			project_name = args[0]
@@ -39,11 +34,29 @@ def invoke(args):
 		# Done
 		print("Created the % project!" % project_name)
 
+	# Command: Help
+	def help():
+		print("Commands")
+		print("=" * 8)
+		print("$ create [project name]        creates a new project at the current location")
+		print("$ help                         displays all commands")
+		print("$ version                      displays the current version")
+
+	# Command: Version
+	def version(args):
+
+		# Current Version
+		print("RIEM Version %s " % __version__)
+
 	# Command Map
 	commands = {
 		"create" : create,
-		"help" : help
+		"help" : help,
+		"version" : version
 	}
+
+	# Spacing
+	print("")
 
 	# No Command
 	if len(args) == 0:
@@ -58,7 +71,8 @@ def invoke(args):
 
 		# Invalid Command
 		else:
-			print("Command %s not recognised!" % args[0])
+			print("ERROR: Command %s not recognised!" % args[0])
+			print("")
 			help()
 
 # Invoke Script
