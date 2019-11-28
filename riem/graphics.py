@@ -1,8 +1,8 @@
 import enum
 from PIL import Image, ImageTk
 from riem.input import Action
-from riem.library import ArrayList
-from riem.library import Point
+from riem.library import ArrayList, Dimensions, Point
+from typing import Any, Callable, Dict
 import tkinter as tk
 
 class Align(enum.Enum):
@@ -14,22 +14,24 @@ class Align(enum.Enum):
 class Graphics:
 
 	# Constants
-	text_default = {
+	text_default: Dict[str, str] = {
 		"font": "Inconsolata 14",
 		"colour": "white"
 	}
-	anchor = {
+	anchor: Dict[Align, int] = {
 		Align.CENTER: tk.CENTER,
 		Align.LEFT: tk.NW,
 		Align.MIDDLE: tk.N,
 		Align.RIGHT: tk.NE
 	}
 
-	def __init__(self, canvas, offset = Point(0, 0)):
+	def __init__(self, canvas: Any, offset: Point = Point(0, 0)) -> None:
+		# NOTE: canvas should have specific type here
 		self.canvas = canvas
 		self.offset = offset
 
-	def draw_image(self, image, position, align = Align.LEFT):
+	def draw_image(self, image: Any, position: Point, align: Align = Align.LEFT) -> None:
+		# NOTE: image should have specific type here
 
 		# Apply Offset
 		position = position + self.offset
@@ -37,7 +39,7 @@ class Graphics:
 		# Render Image
 		self.canvas.create_image(position.x, position.y, image = image, anchor = Graphics.anchor[align])
 
-	def draw_rect(self, position, size, colour, fill):
+	def draw_rect(self, position: Point, size: Dimensions, colour: str, fill: bool) -> None:
 
 		# Apply Offset
 		position = position + self.offset
@@ -50,7 +52,7 @@ class Graphics:
 		else:
 			self.canvas.create_rectangle(position.x, position.y, position.x + size.width, position.y + size.height, outline = colour)
 
-	def draw_text(self, text, position, align = Align.LEFT, font = None, colour = None, shadow = None):
+	def draw_text(self, text: str, position: Point, align: Align = Align.LEFT, font: str = None, colour: str = None, shadow: str = None)  -> None:
 
 		# Apply Offset
 		position = position + self.offset
@@ -68,15 +70,15 @@ class Graphics:
 		# Render Text
 		self.canvas.create_text(position.x, position.y, text = text, font = font, fill = colour, anchor = Graphics.anchor[align])
 
-	def offset_graphics(self, offset):
+	def offset_graphics(self, offset: Point): # -> Graphics
 		return Graphics(self.canvas, self.offset + offset)
 
 class ImageLoader:
 
 	# Constants
-	data = {}
+	data: Dict[str, ImageTk.PhotoImage] = {}
 
-	def load(image):
+	def load(image: str) -> ImageTk.PhotoImage:
 
 		# Store Image
 		if image not in ImageLoader.data:
@@ -87,18 +89,18 @@ class ImageLoader:
 
 class Menu:
 
-	def __init__(self, offset = Point(-30, 0)):
+	def __init__(self, offset: Point = Point(-30, 0)) -> None:
 		self.option = ArrayList()
 		self.active = 0
 		self.offset = offset
 
-	def add_option(self, label, position, logic):
+	def add_option(self, label: str, position: Point, logic: Callable) -> None:
 		self.option = self.option.add(MenuItem(self, label, position, logic))
 
-	def get_offset(self):
+	def get_offset(self) -> Point:
 		return self.offset
 
-	def on_action(self, action):
+	def on_action(self, action: Action) -> None:
 
 		# Invoke Option
 		if action == Action.ACTION:
@@ -115,7 +117,7 @@ class Menu:
 			if self.active < self.option.size() - 1: self.active += 1
 			return
 
-	def render(self, gfx):
+	def render(self, gfx: Graphics) -> None:
 
 		# Render Text
 		self.option.each(lambda it: it.render_label(gfx))
@@ -123,23 +125,23 @@ class Menu:
 		# Render Cursor
 		self.option.get(self.active).render_cursor(gfx)
 
-	def set_cursor(self, position = 0):
+	def set_cursor(self, position: int = 0) -> None:
 		if position >= self.option.size(): position = 0
 		self.active = position
 
 class MenuItem:
 
-	def __init__(self, menu, label, position, logic):
+	def __init__(self, menu: Menu, label: str, position: Point, logic: Callable) -> None:
 		self.menu = menu
 		self.label = label
 		self.position = position
 		self.logic = logic
 
-	def invoke(self):
+	def invoke(self) -> None:
 		self.logic()
 
-	def render_cursor(self, gfx):
+	def render_cursor(self, gfx: Graphics) -> None:
 		gfx.draw_text("->", self.position + self.menu.get_offset())
 
-	def render_label(self, gfx):
+	def render_label(self, gfx: Graphics) -> None:
 		gfx.draw_text(self.label, self.position)
