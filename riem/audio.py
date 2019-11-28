@@ -4,10 +4,10 @@ from playsound import playsound
 
 class SoundLoader:
 
-	def play(sound):
+	def play(sound: str) -> None:
 
 		# Thread Logic
-		def execute(sound, _):
+		def execute(sound: str, _) -> None:
 			playsound("resources/sounds/%s.mp3" % sound)
 
 		# Spawn Thread
