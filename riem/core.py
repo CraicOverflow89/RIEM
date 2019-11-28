@@ -10,7 +10,7 @@ import importlib, inspect, os, re, sys, time
 
 class Application:
 
-	def __init__(self, title : str, state_initial: str, state_directory: str, size: Dimensions = Dimensions(960, 720), tick_ms: int = 250) -> None:
+	def __init__(self, title : str, state_initial: str, state_directory: str, default_text: Dict[str, str] = None, size: Dimensions = Dimensions(960, 720), tick_ms: int = 250) -> None:
 
 		# Public Properties
 		self.size: Dimensions = size
@@ -65,7 +65,7 @@ class Application:
 		canvas.pack()
 
 		# Create Graphics
-		gfx: Graphics = Graphics(canvas)
+		gfx: Graphics = Graphics(canvas, default_text)
 
 		# Intro State
 		self.state_active = StateIntro(self, state_initial)

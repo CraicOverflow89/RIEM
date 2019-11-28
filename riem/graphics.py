@@ -25,10 +25,23 @@ class Graphics:
 		Align.RIGHT: tk.NE
 	}
 
-	def __init__(self, canvas: Any, offset: Point = Point(0, 0)) -> None:
+	def __init__(self, canvas: Any, default_text: Dict[str, str] = None, offset: Point = Point(0, 0)) -> None:
 		# NOTE: canvas should have specific type here
+
+		# Public Properties
 		self.canvas = canvas
 		self.offset = offset
+
+		# Custom Defaults
+		if default_text is not None:
+			for key in default_text:
+
+				# Invalid Key
+				if key not in Graphics.text_default.keys():
+					raise Exception("%s is not a valid default text option!" % key)
+
+				# Update Value
+				Graphics.text_default[key] = default_text[key]
 
 	def draw_image(self, image: Any, position: Point, align: Align = Align.LEFT) -> None:
 		# NOTE: image should have specific type here
@@ -71,7 +84,7 @@ class Graphics:
 		self.canvas.create_text(position.x, position.y, text = text, font = font, fill = colour, anchor = Graphics.anchor[align])
 
 	def offset_graphics(self, offset: Point): # -> Graphics
-		return Graphics(self.canvas, self.offset + offset)
+		return Graphics(self.canvas, None, self.offset + offset)
 
 class ImageLoader:
 
