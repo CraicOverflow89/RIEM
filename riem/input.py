@@ -12,7 +12,8 @@ class Action(enum.Enum):
 
 class Controller:
 
-	def __init__(self, app):
+	def __init__(self, app) -> None:
+		# NOTE: app is Application type but partially initialised here
 		self.app = app
 		self.joystick_active = False
 
@@ -31,10 +32,10 @@ class Controller:
 			self.listener_thread = Thread(target = self.listener, args = (self.listener_halt, self.action_queue), daemon = False)
 			self.listener_thread.start()
 
-	def add_action(self, action):
+	def add_action(self, action: Action) -> None:
 		self.action_queue = self.action_queue.add(action)
 
-	def get_actions(self):
+	def get_actions(self) -> ArrayList:
 
 		# Create Result
 		result = self.action_queue.copy()
@@ -45,13 +46,21 @@ class Controller:
 		# Return Actions
 		return result
 
-	def listener(self, halt, queue):
+	def listener(self, halt: Event, queue: ArrayList) -> None:
 		while True:
+
+			# Terminate
 			if halt.is_set():
 				break
+
+			# Handle Events
 			for event in pygame.event.get():
+
+				# Button Events
 				if event.type == pygame.JOYBUTTONDOWN and (event.button == 0 or event.button == 1):
 					self.add_action(Action.ACTION)
+
+				# Stick Events
 				elif event.type == pygame.JOYAXISMOTION and (event.axis == 0 or event.axis == 1):
 					if event.axis == 0:
 						if event.value >= 0.8:
@@ -64,7 +73,7 @@ class Controller:
 						elif event.value <= -0.8:
 							self.add_action(Action.UP)
 
-	def terminate(self):
+	def terminate(self) -> None:
 		if self.joystick_active is True:
 			self.listener_halt.set()
 			self.listener_thread.join()
