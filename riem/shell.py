@@ -1,12 +1,13 @@
 from riem.library import FileSystem
 from riem.version import __version__
+from typing import List, Dict
 import os, requests, sys
 
 # Script Logic
-def invoke(args):
+def invoke(args: List[str]) -> None:
 
 	# Command: Create
-	def create(args):
+	def create(args: List[str]) -> None:
 
 		# Project Name
 		if len(args) == 0:
@@ -35,7 +36,7 @@ def invoke(args):
 		print("Created the % project!" % project_name)
 
 	# Command: Help
-	def help():
+	def help() -> None:
 		print("Commands")
 		print("=" * 8)
 		print("$ create [project name]        creates a new project at the current location")
@@ -43,7 +44,7 @@ def invoke(args):
 		print("$ version                      displays the current version")
 
 	# Command: Version
-	def version(args):
+	def version(args: List[str]) -> None:
 
 		# Print Logo
 		FileSystem.read_file("%s/resources/shell/logo.txt" % "/".join(__file__.split("/")[:-2])).each(lambda it: print(it))
@@ -53,11 +54,11 @@ def invoke(args):
 		print("Current Version      %s " % __version__)
 
 		# Latest Version
-		response = requests.get(url = "https://raw.githubusercontent.com/CraicOverflow89/RIEM/master/riem/version.py")
+		response: str = requests.get(url = "https://raw.githubusercontent.com/CraicOverflow89/RIEM/master/riem/version.py")
 		print("Latest Version       %s " % response.text.split("\"")[1])
 
 	# Command Map
-	commands = {
+	commands: Dict[str, Callable] = {
 		"create" : create,
 		"help" : help,
 		"version" : version
