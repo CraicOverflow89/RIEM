@@ -211,6 +211,16 @@ class ArrayList():
 	def to_string(self, delimiter = "", prefix = "", postfix = ""):
 		return "".join([prefix, delimiter.join(self.map(lambda it: str(it)).to_list()), postfix])
 
+class Colour:
+
+	def __init__(self, r: int, g: int, b: int) -> None:
+		self.r = r
+		self.g = g
+		self.b = b
+
+	def to_hex(self) -> str:
+		return str("#%02x%02x%02x" % (self.r, self.g, self.b)).upper()
+
 class Dimensions:
 
 	def __init__(self, width, height):
