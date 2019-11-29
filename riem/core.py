@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 from riem.graphics import Align, Graphics, Menu
 from riem.input import Action, Controller, Keyboard
 from riem.library import ArrayList, Dimensions, Point
-from riem.library import Point
+from riem.version import __version__
 from tkinter import Canvas, Tk
 from typing import Any, Callable, Dict
 import importlib, inspect, os, re, sys, time
@@ -119,7 +119,7 @@ class Application:
 		return self.size
 
 	def get_version(self) -> str:
-		return Application.version
+		return __version__
 
 	def on_key_pressed(self, event: Any) -> None:
 		# NOTE: event should be specifically typed here
