@@ -91,29 +91,40 @@ class ImageLoader:
 	# Constants
 	data: Dict[str, ImageTk.PhotoImage] = {}
 
-	def _store(image: str, size: Dimensions = None) -> None:
-		ImageLoader.data[image] = {"image": ImageTk.PhotoImage(Image.open("resources/images/%s.png" % image)), "size": size}
-		# NOTE: images disappear when trying to move the ImageTk.PhotImage to value in ImageLoader.data issues occur
+	def _name(image: str, size: Dimensions, point: Point) -> str:
 
-	def load(image: str, size: Dimensions = None) -> ImageTk.PhotoImage:
-		# NOTE: this can defer to the load_at method (with default values)
+		# Simple Name
+		if size is None and point is None:
+			return image
+
+		# Joined Name
+		return "_".join([image, str(size.width), str(size.height), str(point.x), str(point.y)])
+
+	def _store(image_file: str, image_name: str, size: Dimensions, point: Point) -> None:
+
+		# Load Image
+		image_data = Image.open("resources/images/%s.png" % image_file)
+
+		# Crop Image
+		if size is not None and point is not None:
+			posX: int = point.x * size.width
+			posY: int = point.y * size.height
+			image_data = image_data.crop((posX, posY, posX + size.width, posY + size.height))
 
 		# Store Image
-		if image not in ImageLoader.data:
-			ImageLoader._store(image, size)
+		ImageLoader.data[image_name] = ImageTk.PhotoImage(image_data)
 
-		# Return Image
-		return ImageLoader.data[image]["image"]
+	def load(image: str, size: Dimensions = None, point: Point = None) -> ImageTk.PhotoImage:
 
-	def load_at(image: str, size: Dimensions, point: Point) -> ImageTk.PhotoImage:
+		# Image Name
+		image_name: str = ImageLoader._name(image, size, point)
 
 		# Store Image
-		if image not in ImageLoader.data:
-			ImageLoader._store(image, size)
+		if image_name not in ImageLoader.data:
+			ImageLoader._store(image, image_name, size, point)
 
 		# Return Image
-		return ImageLoader.data[image]["image"]
-		# NOTE: will be calling the crop method on the above value
+		return ImageLoader.data[image_name]
 
 class Menu:
 
