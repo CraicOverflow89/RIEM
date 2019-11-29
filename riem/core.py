@@ -13,11 +13,18 @@ class Application:
 
 	def __init__(self, title: str, state_initial: str, state_directory: str, default_text: Dict[str, str] = None, icon: str = None, size: Dimensions = Dimensions(960, 720), tick_ms: int = 250, **kwargs) -> None:
 
+		# Default Properties
+		maximise: bool = False
+
 		# Parse Kwargs
 		for k, v in kwargs.items():
 
 			# Option: Debug
 			if k == "debug": Application._debug_parse(v, title, size, tick_ms)
+
+			# Option: Maximise
+			if k == "fullscreen" and v == True:
+				maximise = True
 
 		# Public Properties
 		self.size: Dimensions = size
@@ -70,6 +77,8 @@ class Application:
 		self.app.title(title)
 		self.app.geometry("%dx%d" % (self.size.width, self.size.height))
 		self.app.resizable(False, False)
+		if maximise is True:
+			self.app.attributes("-fullscreen", True)
 		if icon is not None:
 			Debug.print(" - locating custom icon %s" % icon, DebugChannel.RIEM)
 			self.app.iconbitmap(r'%s' % os.path.join(os.getcwd(), "resources", "icons", "%s.ico" % icon))
