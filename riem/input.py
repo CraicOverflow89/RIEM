@@ -1,3 +1,4 @@
+from riem.debug import Debug, DebugChannel
 from riem.library import ArrayList
 from threading import Event, Thread
 import enum, pygame

@@ -1,4 +1,5 @@
 from PIL import Image, ImageTk
+from riem.debug import Debug, DebugChannel
 from riem.input import Action
 from riem.library import ArrayList, Dimensions, Point
 from typing import Any, Callable, Dict
@@ -112,6 +113,9 @@ class ImageLoader:
 
 		# Store Image
 		ImageLoader.data[image_name] = ImageTk.PhotoImage(image_data)
+
+		# Debug
+		Debug.print("Stored image %s" % image_name, DebugChannel.GRAPHICS)
 
 	def load(image: str, size: Dimensions = None, point: Point = None) -> ImageTk.PhotoImage:
 
