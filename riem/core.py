@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from PIL import Image, ImageTk
 from riem.debug import Debug, DebugChannel
-from riem.graphics import Align, Graphics, Menu
+from riem.graphics import Align, Graphics, ImageLoader, Menu
 from riem.input import Action, Controller, Keyboard
 from riem.library import ArrayList, Dimensions, Point
 from riem.version import __version__
@@ -198,6 +198,9 @@ class Application:
 		# Debug
 		Debug.print("Reverting to stored state", DebugChannel.STATE)
 
+		# Purge Images
+		ImageLoader.purge()
+
 		# Nothing Stored
 		if self.state_stored is None:
 			raise Exception("No stored state to revert to!")
@@ -217,6 +220,9 @@ class Application:
 
 		# Debug
 		Debug.print("Updating to %s state" % state, DebugChannel.STATE)
+
+		# Purge Images
+		ImageLoader.purge()
 
 		# Existing State
 		if self.state_active is not None:

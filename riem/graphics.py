@@ -115,7 +115,7 @@ class ImageLoader:
 		ImageLoader.data[image_name] = ImageTk.PhotoImage(image_data)
 
 		# Debug
-		Debug.print("Stored image %s" % image_name, DebugChannel.GRAPHICS)
+		Debug.print("Stored image %s (%d)" % (image_name, len(ImageLoader.data)), DebugChannel.GRAPHICS)
 
 	def load(image: str, size: Dimensions = None, point: Point = None) -> ImageTk.PhotoImage:
 
@@ -128,6 +128,14 @@ class ImageLoader:
 
 		# Return Image
 		return ImageLoader.data[image_name]
+
+	def purge() -> None:
+
+		# Debug
+		Debug.print("Purging stored images", DebugChannel.GRAPHICS)
+
+		# Clear Images
+		ImageLoader.data = {}
 
 class Menu:
 
