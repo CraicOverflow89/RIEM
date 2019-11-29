@@ -1,9 +1,8 @@
-import enum
 from PIL import Image, ImageTk
 from riem.input import Action
 from riem.library import ArrayList, Dimensions, Point
 from typing import Any, Callable, Dict
-import tkinter as tk
+import enum, tkinter as tk
 
 class Align(enum.Enum):
 	CENTER = 0

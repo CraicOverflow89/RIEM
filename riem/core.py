@@ -6,12 +6,25 @@ from riem.library import ArrayList, Dimensions, Point
 from riem.version import __version__
 from tkinter import Canvas, Tk
 from typing import Any, Callable, Dict
-import importlib, inspect, os, re, sys, time
+import enum, importlib, inspect, os, re, sys, time
+
+class Debug(enum.Enum):
+	RIEM = 0
+	STATE = 1
+	AUDIO = 2
+	GRAPHICS = 3
+	INPUT = 4
 
 class Application:
 
 	# Constants
-	debug_enabled = False
+	debug_channels = {
+		Debug.RIEM: False,
+		Debug.STATE: False,
+		Debug.AUDIO: False,
+		Debug.GRAPHICS: False,
+		Debug.INPUT: False
+	}
 
 	def __init__(self, title: str, state_initial: str, state_directory: str, default_text: Dict[str, str] = None, icon: str = None, size: Dimensions = Dimensions(960, 720), tick_ms: int = 250, **kwargs) -> None:
 
@@ -19,23 +32,7 @@ class Application:
 		for k, v in kwargs.items():
 
 			# Option: Debug
-			if k == "debug":
-
-				# Invalid Value
-				if isinstance(v, bool) is False:
-					raise Exception("Value of the debug kwarg must be boolean!")
-
-				# Apply Value
-				if v == True:
-					Application.debug_enabled = True
-					Application.print("")
-					Application.print("RIEM Application Debug Mode")
-					Application.print("===========================")
-					Application.print("Version: %s" % __version__)
-					Application.print("Project: %s" % title)
-					Application.print("Window:  %d x %d" % (size.width, size.height))
-					Application.print("Tick:    %d ms" % tick_ms)
-					Application.print()
+			if k == "debug": Application._debug_parse(v, title, size, tick_ms)
 
 		# Public Properties
 		self.size: Dimensions = size
@@ -137,6 +134,56 @@ class Application:
 		# Start Application
 		self.app.mainloop()
 
+	def _debug_parse(value: str, title: str, size: Dimensions, tick_ms: int) -> None:
+
+		# Invalid Value
+		if not isinstance(value, str) or re.match(r"^[\+\-][A-Z]*$", value) is False:
+			raise Exception("Invalid debug string!")
+
+		# Disable Channels
+		if value[0] == "-":
+
+			# Disable All
+			if len(value) == 1:
+				return
+
+			# Disable Specific
+			if "R" not in value: Application.debug_channels[Debug.RIEM] = True
+			if "S" not in value: Application.debug_channels[Debug.STATE] = True
+			if "A" not in value: Application.debug_channels[Debug.AUDIO] = True
+			if "G" not in value: Application.debug_channels[Debug.GRAPHICS] = True
+			if "I" not in value: Application.debug_channels[Debug.INPUT] = True
+
+		# Enable Channels
+		if value[0] == "+":
+
+			# Enable All
+			if len(value) == 1:
+				Application.debug_channels = {
+					Debug.RIEM: True,
+					Debug.STATE: True,
+					Debug.AUDIO: True,
+					Debug.GRAPHICS: True,
+					Debug.INPUT: True
+				}
+
+			# Enable Specific
+			if "R" in value: Application.debug_channels[Debug.RIEM] = True
+			if "S" in value: Application.debug_channels[Debug.STATE] = True
+			if "A" in value: Application.debug_channels[Debug.AUDIO] = True
+			if "G" in value: Application.debug_channels[Debug.GRAPHICS] = True
+			if "I" in value: Application.debug_channels[Debug.INPUT] = True
+
+		# Print Info
+		Application.print()
+		Application.print("RIEM Application Debug Mode")
+		Application.print("===========================")
+		Application.print("Version: %s" % __version__)
+		Application.print("Project: %s" % title)
+		Application.print("Window:  %d x %d" % (size.width, size.height))
+		Application.print("Tick:    %d ms" % tick_ms)
+		Application.print()
+
 	def action(self, action: Action) -> None:
 		self.state_active.on_action(action)
 
@@ -151,10 +198,10 @@ class Application:
 		if event.keycode in Keyboard.action:
 			self.action(Keyboard.action[event.keycode])
 
-	def print(value: Any = "") -> None:
+	def print(value: Any = "", channel: Debug = Debug.RIEM) -> None:
 
-		# Debug Disabled
-		if Application.debug_enabled is False:
+		# Channel Disabled
+		if Application.debug_channels[channel] is False:
 			return
 
 		# Print Logic

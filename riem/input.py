@@ -1,7 +1,6 @@
-import enum
 from riem.library import ArrayList
 from threading import Event, Thread
-import pygame
+import enum, pygame
 
 class Action(enum.Enum):
 	ACTION = 0
