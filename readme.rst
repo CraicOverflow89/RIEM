@@ -1,3 +1,5 @@
+.. image:: https://raw.githubusercontent.com/CraicOverflow89/RIEM/master/resources/images/logo.png
+
 ============
 RIEM Project
 ============
