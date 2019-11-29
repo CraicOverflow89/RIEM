@@ -10,7 +10,32 @@ import importlib, inspect, os, re, sys, time
 
 class Application:
 
-	def __init__(self, title : str, state_initial: str, state_directory: str, default_text: Dict[str, str] = None, icon: str = None, size: Dimensions = Dimensions(960, 720), tick_ms: int = 250) -> None:
+	# Constants
+	debug_enabled = False
+
+	def __init__(self, title: str, state_initial: str, state_directory: str, default_text: Dict[str, str] = None, icon: str = None, size: Dimensions = Dimensions(960, 720), tick_ms: int = 250, **kwargs) -> None:
+
+		# Parse Kwargs
+		for k, v in kwargs.items():
+
+			# Option: Debug
+			if k == "debug":
+
+				# Invalid Value
+				if isinstance(v, bool) is False:
+					raise Exception("Value of the debug kwarg must be boolean!")
+
+				# Apply Value
+				if v == True:
+					Application.debug_enabled = True
+					Application.print("")
+					Application.print("RIEM Application Debug Mode")
+					Application.print("===========================")
+					Application.print("Version: %s" % __version__)
+					Application.print("Project: %s" % title)
+					Application.print("Window:  %d x %d" % (size.width, size.height))
+					Application.print("Tick:    %d ms" % tick_ms)
+					Application.print()
 
 		# Public Properties
 		self.size: Dimensions = size
@@ -125,6 +150,24 @@ class Application:
 		# NOTE: event should be specifically typed here
 		if event.keycode in Keyboard.action:
 			self.action(Keyboard.action[event.keycode])
+
+	def print(value: Any = "") -> None:
+
+		# Debug Disabled
+		if Application.debug_enabled is False:
+			return
+
+		# Print Logic
+		def print_value(value: Any) -> None:
+			print(str(value))
+
+		# Unpack Lists
+		if isinstance(value, list):
+			for element in value:
+				print_value(element)
+
+		# Print Value
+		else: print_value(value)
 
 	def state_revert(self, data: Dict = None) -> None:
 
